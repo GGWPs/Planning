@@ -1,0 +1,26 @@
+
+
+
+app-root {
+  display: block;
+  height: 100%;
+}
+:host {
+  height: 100%
+}
+
+/*footer {*/
+/*  position: absolute;*/
+/*  bottom: 0;*/
+/*  width: 100%;*/
+/*}*/
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: deepskyblue;
+  color: white;
+  text-align: center;
+}

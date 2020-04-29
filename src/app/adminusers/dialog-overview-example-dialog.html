@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Details:</h1>
+<table style="overflow: auto;">
+<div *ngFor="let item of data.user | keyvalue">
+  <tr>{{item.key}}:</tr>
+  <tr *ngIf="!this.editMode" style="margin-bottom: 2px">{{item.value}}</tr>
+  <input *ngIf="this.editMode" matInput value="{{item.value}}">
+  <br>
+</div>
+</table>
+<div mat-dialog-actions>
+  <button *ngIf="this.editMode" mat-button (click)="back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="this.editMode" mat-button (click)="test()"><mat-icon>save</mat-icon></button>
+  <button *ngIf="!this.editMode" mat-button (click)="edit()"><mat-icon>edit</mat-icon></button>
+  <button *ngIf="!this.editMode" mat-button (click)="onNoClick(data.user)">Back</button>
+</div>

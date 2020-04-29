@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Delete list {{data.list}}?</h1>
+<a style="color:red">You will lose every booking of this list!</a>
+<div mat-dialog-actions style="display: flex;
+    justify-content: space-evenly;margin-top: 5%;">
+  <button mat-button color="red"(click)="delete(data.list)">Delete</button>
+  <button mat-button (click)="onNoClick()">Back</button>
+</div>
