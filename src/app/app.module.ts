@@ -16,7 +16,7 @@ import {
   MatIconModule,
   MatListModule, MatPaginatorModule, MatProgressBarModule,
   MatSortModule,
-  MatTableModule
+  MatTableModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {
@@ -29,7 +29,7 @@ import {
 } from '@syncfusion/ej2-angular-schedule';
 import { ConfirmbookingComponent } from './confirmbooking/confirmbooking.component';
 import { ThanksComponent } from './thanks/thanks.component';
-import { AdminbookingComponent } from './adminbooking/adminbooking.component';
+import {AdminbookingComponent, DialogConfirmComponent} from './adminbooking/adminbooking.component';
 import {HttpClientModule} from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { AdminaddComponent } from './adminadd/adminadd.component';
@@ -61,9 +61,10 @@ import { CoronaComponent } from './corona/corona.component';
     BookedComponent,
     CoronaComponent,
     DialogDeleteComponent,
-    DialogDeleteUserComponent
+    DialogDeleteUserComponent,
+    DialogConfirmComponent
   ],
-  entryComponents: [DialogOverviewExampleDialog, DialogDeleteComponent, DialogDeleteUserComponent],
+  entryComponents: [DialogOverviewExampleDialog, DialogDeleteComponent, DialogDeleteUserComponent, DialogConfirmComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -89,6 +90,8 @@ import { CoronaComponent } from './corona/corona.component';
     ReactiveFormsModule,
     MatCardModule,
     MatProgressBarModule,
+    MatToolbarModule,
+    MatTabsModule,
   ],
   providers: [DayService,
     WeekService,

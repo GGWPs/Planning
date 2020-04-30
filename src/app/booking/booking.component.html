@@ -1,0 +1,36 @@
+
+<div class="form" style="display: flex; justify-content: center;">
+  <p>Wählen Sie eine Zeit, die zu Ihnen passt</p>
+  <p class="error"*ngIf="error">Datum in der Vergangenheit</p>
+<ejs-schedule *ngIf="this.bookings" #scheduleObj width='70%' height='520px' currentView='WorkWeek' [workHours]="scheduleHours" [views]="scheduleViews" [workDays]='workWeekDays'
+              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
+<!--  <ng-template #quickInfoTemplatesHeader let-data>-->
+<!--    <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">-->
+<!--      <div class="e-popup-header">-->
+<!--        <div class="e-header-icon-wrapper">-->
+<!--          <div *ngIf="data.elementType == 'event'" class="subject">{{data.Subject}}</div>-->
+<!--          <button class="e-close e-close-icon e-icons" title="Close" (click)="onCloseClick($event)"></button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ng-template>-->
+<!--  <ng-template #quickInfoTemplatesContent let-data>-->
+<!--    <div *ngIf="data.elementType == 'cell'" class="e-cell-content">-->
+<!--      <form class="e-schedule-form">-->
+<!--        <div style="padding:10px">-->
+<!--          <input class="subject e-field e-input" type="text" name="Subject" placeholder="Opmerking" style="width:100%">-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--      <div class="start-time" style="text-align: center;">Start: {{data.StartTime.toLocaleString()}}</div>-->
+<!--      <div class="end-time" style="text-align: center;">End: {{data.EndTime.toLocaleString()}}</div>-->
+<!--  </ng-template>-->
+  <ng-template #quickInfoTemplatesFooter let-data>
+  <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">
+    <div class="right-button">
+      <button class="e-event-create" title="Add" (click)="onAddClick($event)">hinzufügene</button>
+    </div>
+  </div></ng-template> </ejs-schedule>
+</div>
+
+

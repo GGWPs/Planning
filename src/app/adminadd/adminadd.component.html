@@ -1,0 +1,98 @@
+<div class="body">
+  <h1>Add file</h1>
+  <div class="addFile">
+    <input type="file" (change)="onFileChange($event)">
+    <div id="output"></div>
+  </div>
+  <div *ngIf="willDownload">
+    <label>List name: </label><br>
+    <input type="text"  (change)="changeList($event)" value="{{listName}}"/><br>
+    <button mat-button color="primary" (click)="insert()">Insert into database</button>
+  </div>
+  <p *ngIf="added > 0">{{added}} added!</p>
+
+  <h1>Add manual user</h1>
+  <div class="manual">
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="column1">
+      <mat-form-field>
+        <mat-label>Postcode</mat-label>
+        <input matInput formControlName="postcode">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Plaats</mat-label>
+        <input matInput formControlName="plaats">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Adres</mat-label>
+        <input matInput formControlName="adres">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Huisnummer</mat-label>
+        <input matInput formControlName="huisnr">
+      </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Huisnummer ext</mat-label>
+          <input matInput formControlName="huisext">
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Kamer</mat-label>
+          <input matInput formControlName="kamer">
+        </mat-form-field><br>
+      </div>
+      <div class="column2">
+        <mat-form-field >
+        <mat-label>Achternaam</mat-label>
+        <input matInput formControlName="achternaam">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Telefoon</mat-label>
+        <input matInput formControlName="telefoon" required>
+      </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Mobiel</mat-label>
+          <input matInput formControlName="mobiel">
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Soort Bouw</mat-label>
+          <input matInput formControlName="sbouw">
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Areapop</mat-label>
+          <input matInput formControlName="apop">
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>DP</mat-label>
+          <input matInput formControlName="dp">
+        </mat-form-field><br>
+      </div>
+      <div class="column3" >
+        <mat-form-field>
+          <mat-label>Opleverstatus</mat-label>
+          <input matInput formControlName="oplever">
+        </mat-form-field><br>
+        <mat-form-field>
+          <mat-label>RedenNA</mat-label>
+          <input matInput formControlName="reden">
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Geschouwd</mat-label>
+          <input matInput formControlName="geschouwd">
+        </mat-form-field><br>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required>
+          <mat-error>
+            Please provide a valid email address
+          </mat-error>
+        </mat-form-field><br>
+        <mat-form-field >
+          <mat-label>Lijst</mat-label>
+          <input matInput formControlName="lijst" value="Manual">
+        </mat-form-field><br>
+        <button mat-raised-button color="primary">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+

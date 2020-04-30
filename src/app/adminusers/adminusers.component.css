@@ -1,0 +1,29 @@
+table {
+  width: 80%;
+  /*overflow-x: auto;*/
+  /*overflow-y: hidden;*/
+  min-width: 500px;
+  bottom-margin: 100px;
+}
+
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
+}
+
+.filter {
+  display:flex;
+  margin-top: 10px;
+  justify-content: space-evenly;
+}
+
+.form {
+  height:50%;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.manual {
+
+}

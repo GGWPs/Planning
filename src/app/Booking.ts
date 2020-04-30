@@ -1,5 +1,6 @@
 
 export class Booking {
+  bookingID: string;
   id: string;
   start: string;
   end: string;

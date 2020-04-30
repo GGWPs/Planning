@@ -1,0 +1,17 @@
+<div class="confirm">
+  <h1>Termin machen:</h1>
+  <h2>Email</h2>
+  <p>{{user.email}}</p>
+  <h2>Adresse</h2>
+  <p>{{user.adres}} {{user.huisnr}}</p>
+  <h2 *ngIf="comment">Kommentar</h2>
+  <p>{{comment}}</p>
+  <h2>Datum</h2>
+  <p>{{startTime}}</p><br>
+    <button mat-raised-button color="primary" routerLink="/booking" style="margin-right:20px">Zuruck</button>
+    <button mat-raised-button color="primary" (click)="onClickMe()" style="margin-left:20px">Confirm</button>
+</div>
+
+
+
+

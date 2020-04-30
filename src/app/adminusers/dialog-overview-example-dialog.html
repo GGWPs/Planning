@@ -1,15 +1,97 @@
 <h1 mat-dialog-title>Details:</h1>
-<table style="overflow: auto;">
+<table *ngIf="!this.editMode" style="overflow: auto;">
 <div *ngFor="let item of data.user | keyvalue">
   <tr>{{item.key}}:</tr>
   <tr *ngIf="!this.editMode" style="margin-bottom: 2px">{{item.value}}</tr>
-  <input *ngIf="this.editMode" matInput value="{{item.value}}">
+<!--  <input *ngIf="this.editMode" matInput value="{{item.value}}" (keyup)="onKey($event);" style="margin-bottom: 2px">-->
   <br>
 </div>
 </table>
+<div *ngIf="this.editMode" class="manual" style="display: flex;
+  justify-content: center;">
+  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="column1">
+      <mat-form-field>
+        <mat-label>Postcode</mat-label>
+        <input matInput value="{{data.user.postcode}}" formControlName="postcode">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Plaats</mat-label>
+        <input matInput value="{{data.user.plaats}}" formControlName="plaats">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Adres</mat-label>
+        <input matInput value="{{data.user.adres}}" formControlName="adres">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Huisnummer</mat-label>
+        <input matInput value="{{data.user.huisnr}}" formControlName="huisnr">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Huisnummer ext</mat-label>
+        <input matInput value="{{data.user.huisext}}" formControlName="huisext">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Kamer</mat-label>
+        <input matInput value="{{data.user.kamer}}" formControlName="kamer">
+      </mat-form-field><br>
+    </div>
+    <div class="column2">
+      <mat-form-field >
+        <mat-label>Achternaam</mat-label>
+        <input matInput value="{{data.user.achternaam}}" formControlName="achternaam">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Telefoon</mat-label>
+        <input matInput value="{{data.user.telefoon}}" formControlName="telefoon" required>
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Mobiel</mat-label>
+        <input matInput value="{{data.user.mobiel}}" formControlName="mobiel">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Soort Bouw</mat-label>
+        <input matInput value="{{data.user.sbouw}}" formControlName="sbouw">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Areapop</mat-label>
+        <input matInput value="{{data.user.areapop}}" formControlName="apop">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>DP</mat-label>
+        <input matInput value="{{data.user.DP}}" formControlName="dp">
+      </mat-form-field><br>
+    </div>
+    <div class="column3" >
+      <mat-form-field>
+        <mat-label>Opleverstatus</mat-label>
+        <input matInput value="{{data.user.oplever}}" formControlName="oplever">
+      </mat-form-field><br>
+      <mat-form-field>
+        <mat-label>RedenNA</mat-label>
+        <input matInput value="{{data.user.redenNA}}" formControlName="reden">
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Geschouwd</mat-label>
+        <input matInput value="{{data.user.geschouwd}}" formControlName="geschouwd">
+      </mat-form-field><br>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput value="{{data.user.email}}" formControlName="email" required>
+        <mat-error>
+          Please provide a valid email address
+        </mat-error>
+      </mat-form-field><br>
+      <mat-form-field >
+        <mat-label>Lijst</mat-label>
+        <input matInput formControlName="lijst" value="Manual">
+      </mat-form-field><br>
+    </div>
+    <button *ngIf="this.editMode" mat-button><mat-icon>save</mat-icon></button>
+  </form>
+</div>
 <div mat-dialog-actions>
   <button *ngIf="this.editMode" mat-button (click)="back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="this.editMode" mat-button (click)="test()"><mat-icon>save</mat-icon></button>
   <button *ngIf="!this.editMode" mat-button (click)="edit()"><mat-icon>edit</mat-icon></button>
-  <button *ngIf="!this.editMode" mat-button (click)="onNoClick(data.user)">Back</button>
+  <button *ngIf="!this.editMode" mat-button (click)="onNoClick()">Back</button>
 </div>

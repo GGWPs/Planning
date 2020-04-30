@@ -1,0 +1,105 @@
+<div class="filter" fxLayout fxLayoutAlign="center center">
+  <mat-form-field fxFlex="40%">
+    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+</div>
+<div class="form">
+  <div>
+  <mat-nav-list *ngIf="lists">
+    <mat-list-item (click)="filterList('')"><a matLine>All</a></mat-list-item>
+    <mat-list-item *ngFor="let link of lists.lists" (click)="filterList(link.fileName)">
+      <a matLine>{{ link.fileName }}</a>
+      <button mat-icon-button (click)="delete(link.fileName)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-nav-list>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort style="position: sticky">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Achternaam </th>
+      <td mat-cell *matCellDef="let element"> {{element.achternaam}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telefoon">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> telefoon </th>
+      <td mat-cell *matCellDef="let element"> {{element.telefoon}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="adres">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> adres </th>
+      <td mat-cell *matCellDef="let element"> {{element.adres}}  </td>
+    </ng-container>
+
+    <ng-container matColumnDef="huisnr">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> huisnummer </th>
+      <td mat-cell *matCellDef="let element"> {{element.huisnr}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="DP">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> DP </th>
+      <td mat-cell *matCellDef="let element"> {{element.dp}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="emailsent">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Emailed? </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon class="mat-18">clear</mat-icon>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="booked?">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Afspraak </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-icon class="mat-18">{{element.booked}}</mat-icon>
+    </td>
+    </ng-container>
+    <ng-container matColumnDef="done">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Done </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon class="mat-18">{{element.confirmed}}</mat-icon>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="file">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Lijst </th>
+      <td mat-cell *matCellDef="let element"> {{element.fileName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef> Details </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="redirectToDetails(element.id)">
+          <mat-icon class="mat-18">reorder</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="redirectToUpdate(element.id)">
+          <mat-icon class="mat-18">maile</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef> Delete </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="warn" (click)="redirectToDelete(element.id)">
+          <mat-icon class="mat-18">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50, 100, 500]" style="margin-bottom: 10%;">
+</mat-paginator>

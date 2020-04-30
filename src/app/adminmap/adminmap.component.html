@@ -1,0 +1,46 @@
+<div>  <h2>Lists: </h2>
+  <mat-selection-list #selectedList *ngIf="lists" (click)="filterList($event)">
+    <mat-list-option *ngFor="let item of lists.lists">
+      {{item.fileName}}
+    </mat-list-option>
+    <p>
+      options: {{selectedList.selectedOptions.selected}}
+      Options selected: {{selectedList.selectedOptions.selected.length}}
+    </p>
+  </mat-selection-list></div><div  class="map" style="height: 50vw;display:grid;   "><mgl-map
+  [style]="'mapbox://styles/mapbox/streets-v9'"
+  [zoom]="[7]"
+  [center]="[ 9.404954, 52.520008]"
+  [pitch]="45"
+  (load)="onLoad($event)"
+  id="3d-buildings"
+  source="composite"
+  sourceLayer="building">
+<!--  [filter]="['==', 'extrude', 'true']"-->
+<!--  type="fill-extrusion"-->
+<!--  [minzoom]="15"-->
+<!--  [paint]="{-->
+<!--            'fill-extrusion-color': '#aaa',-->
+<!--            'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 15, 0, 15.05, ['get', 'height']],-->
+<!--            'fill-extrusion-base': ['interpolate', ['linear'], ['zoom'], 15, 0, 15.05, ['get', 'min_height']],-->
+<!--            'fill-extrusion-opacity': 0.6-->
+<!--  }"-->
+  <mgl-control mglGeocoder [searchInput]="'Wiesbaden'"></mgl-control>
+  <mgl-geojson-source id="points" [data]="points"></mgl-geojson-source>
+  <mgl-layer
+    id="points"
+    source="points"
+    type="symbol"
+    [layout]="{
+          'icon-image': '{icon}-15',
+          'icon-allow-overlap': true
+        }"
+    (click)="onClick($event)"
+    (mouseEnter)="cursorStyle = 'pointer'"
+    (mouseLeave)="cursorStyle = ''"
+  ></mgl-layer>
+  <mgl-popup *ngIf="selectedPoint" [feature]="selectedPoint">
+    <span [innerHTML]="selectedPoint.properties?.description"></span>
+  </mgl-popup>
+</mgl-map>
+</div>
