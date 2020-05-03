@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
-import * as XLSX from 'xlsx';
-import {ActionEventArgs, ToolbarActionArgs, ExportOptions, ExcelExportService  } from '@syncfusion/ej2-angular-schedule';
 import {UserService} from '../user.service';
 import { ItemModel } from '@syncfusion/ej2-angular-navigations';
 import {User} from '../User';
 import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
+import { createElement } from '@syncfusion/ej2-base';
+import { DropDownList } from '@syncfusion/ej2-dropdowns';
 import {
   EventSettingsModel,
   DayService,
@@ -12,7 +12,8 @@ import {
   View,
   TimeScaleModel,
   ScheduleComponent,
-  WorkHoursModel
+  WorkHoursModel,
+  PopupOpenEventArgs
 } from '@syncfusion/ej2-angular-schedule';
 import {BookingService} from '../booking.service';
 import {Booking} from '../Booking';
@@ -47,6 +48,12 @@ export class AdminbookingComponent implements OnInit {
   error: boolean;
   bookings;
   users;
+  selectedUser;
+  comment;
+  endTime;
+  startTime;
+  userID;
+
   constructor(private bookingService: BookingService, private userService: UserService, public dialog: MatDialog) { }
 
   async ngOnInit() {
@@ -70,7 +77,7 @@ export class AdminbookingComponent implements OnInit {
           this.data.push({
             Id: this.data.length + 1,
             Subject: user2.adres + ' ' + user2.huisnr + ' Naam: ' +
-              user2.achternaam + '  DP: ' + user2.dp + '  Telefoon: ' + user2.telefoon,
+              user2.achternaam + '  DP: ' + user2.dp + '  Telefoon: ' + user2.telefoon + ' Opmerking: ' + booking.comment,
             StartTime: new Date(booking.start),
             EndTime: new Date(booking.end),
             bookingID: booking.bookingID
@@ -83,17 +90,20 @@ export class AdminbookingComponent implements OnInit {
 
   deleteBooking(id: number) {
     this.bookingService.removeBooking(id)
-      .then(users => {  this.loadBookings(); } )
+      .then(users => { this.data = []; this.loadBookings(); } )
       .catch(any2 => { console.log('rejected!');
       });
+  }
+
+  changeTimeScale(scale: number) {
+    this.timeScale = {enable: true, interval: 60, slotCount: scale};
   }
 
   public onAddClick(): void {
     this.onCloseClick();
     const data = this.scheduleObj.getCellDetails(this.scheduleObj.getSelectedElements());
     const eventData = this.scheduleObj.eventWindow.getObjectFromFormData('e-quick-popup-wrapper');
-    Object.assign(eventData, {IsBlock: true});
-    this.bookingService.setData(eventData);
+    Object.assign(eventData, {user: this.selectedUser});
     this.scheduleObj.eventWindow.convertToEventData(data as { [key: string]: any }, eventData);
     for (const key in eventData) {
       if (eventData.hasOwnProperty(key)) {
@@ -105,11 +115,64 @@ export class AdminbookingComponent implements OnInit {
             this.error = true;
           } else {
             this.error = false;
-            eventData.Id = this.scheduleObj.eventBase.getEventMaxID() as number + 1;
-            this.scheduleObj.addEvent(eventData);
+            this.startTime = value;
             console.log(eventData);
           }
         }
+        if (key === 'EndTime') {
+              this.endTime = value;
+         }
+        if (key === 'Subject') {
+            this.comment = value;
+         }
+        if (key === 'user') {
+          this.userID = value;
+        }
+      }
+    }
+    eventData.Id = this.scheduleObj.eventBase.getEventMaxID() as number + 1;
+    this.scheduleObj.addEvent(eventData);
+    if (this.userID !== undefined) {
+      const booking = new Booking(this.userID, this.startTime.toISOString(), this.endTime.toISOString(), this.comment, false);
+      this.addBooking(booking);
+    }
+  }
+
+  addBooking(booking: Booking) {
+    this.bookingService
+      .addBooking(booking)
+      .subscribe(resp => {
+      });
+  }
+
+
+  getUserList() {
+    const datasource = [];
+    this.users.forEach(user => {datasource.push({text: user.adres + ' ' + user.huisnr + ' ' + user.email, value: user.id}); });
+    return datasource;
+  }
+
+  onPopupOpen(args: PopupOpenEventArgs): void {
+    if (args.type === 'Editor') {
+      // Create required custom elements in initial time
+      if (!args.element.querySelector('.custom-field-row')) {
+        const row: HTMLElement = createElement('div', {className: 'custom-field-row'});
+        const formElement: HTMLElement = args.element.querySelector('.e-schedule-form');
+        formElement.firstChild.insertBefore(row, args.element.querySelector('.e-title-location-row'));
+        const container: HTMLElement = createElement('div', {className: 'custom-field-container'});
+        const inputEle: HTMLInputElement = createElement('input', {
+          className: 'e-field', attrs: {name: 'User List'}
+        }) as HTMLInputElement;
+        container.appendChild(inputEle);
+        row.appendChild(container);
+        const dropDownList: DropDownList = new DropDownList({
+          dataSource: this.getUserList(),
+          fields: {text: 'text', value: 'value'},
+          value: ( (args.data) as { [key: string]: any }).EventType as string,
+          floatLabelType: 'Always', placeholder: 'User List'
+        });
+        dropDownList.appendTo(inputEle);
+        inputEle.setAttribute('name', 'EventType');
       }
     }
   }
@@ -140,17 +203,18 @@ export class AdminbookingComponent implements OnInit {
     });
   }
 
-  openDialog(val: number): void {
+  openDialog(bookingID: number, eventID: number): void {
       const dialogRef = this.dialog.open(DialogConfirmComponent, {
-        width: '50%',
-        height: '50%',
-        data: {test: val}
+        width: '35%',
+        height: '25%',
+        data: {test: bookingID}
       });
 
       dialogRef.afterClosed().subscribe(result => {
         if (result !== undefined) {
           if (result === 'yes') {
-            this.deleteBooking(val);
+            this.scheduleObj.deleteEvent(eventID);
+            this.deleteBooking(bookingID);
           }
         }
       });

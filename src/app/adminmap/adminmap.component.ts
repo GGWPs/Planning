@@ -92,7 +92,7 @@ export class AdminmapComponent implements OnInit {
     };
   }
 
-  makeUser(){
+  makeUser() {
     const features = [];
 
     features.push({
@@ -129,7 +129,6 @@ export class AdminmapComponent implements OnInit {
       this.userService.getLists()
         .subscribe(lists => {
           this.lists = lists;
-          console.log(lists.lists);
           resolve();
         });
     });

@@ -47,9 +47,7 @@ export class AdminusersComponent implements OnInit, AfterViewInit {
   }
 
   filterList(val) {
-    console.log(val);
     this.dataSource.filter = val.toString();
-    // this.dataSource.data = this.dataSource.data.filter((unit) => unit.fileName.indexOf(val) > -1);
   }
   getUsers() {
     return new Promise(resolve => {
@@ -313,8 +311,10 @@ export class DialogEmailUserComponent {
   start: string;
   end: string;
   emailed: boolean;
+  selectedDays = [];
 
   timeslots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   constructor(private userService: UserService,
               public dialogRef: MatDialogRef<DialogEmailUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { this.start = '08:00';  this.end = '20:00'; }
@@ -324,15 +324,39 @@ export class DialogEmailUserComponent {
   }
 
   email() {
-    if (!this.emailed) {
-      this.emailed = true;
-      this.data.user.timeslotStart = this.start;
-      this.data.user.timeslotEnd = this.end;
-      this.userService
-        .emailUser(this.data.user)
-        .subscribe(resp => {
-          this.dialogRef.close('emailed');
-        });
+    if (this.start < this.end) {
+      if (!this.emailed) {
+        this.emailed = true;
+        this.data.user.timeslotStart = this.start;
+        this.data.user.timeslotEnd = this.end;
+        if (Array.isArray(this.selectedDays) && this.selectedDays.length) {
+          this.data.user.days = this.selectedDays;
+        } else {
+          this.data.user.days = [1, 2, 3, 4, 5];
+        }
+        this.userService
+          .emailUser(this.data.user)
+          .subscribe(resp => {
+            this.dialogRef.close('emailed');
+          });
+      }
+    }
+  }
+
+  onSelectionDay(e, v) {
+    this.selectedDays = [];
+    for (const a of v) {
+      if (a.value === ('Monday')) {
+        this.selectedDays.push(1);
+      } else if (a.value === ('Tuesday')) {
+        this.selectedDays.push(2);
+      } else if (a.value === ('Wednesday')) {
+        this.selectedDays.push(3);
+      } else if (a.value === ('Thursday')) {
+        this.selectedDays.push(4);
+      } else if (a.value === ('Friday')) {
+        this.selectedDays.push(5);
+      }
     }
   }
 }

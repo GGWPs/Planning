@@ -1,12 +1,16 @@
-
+<div style="display: flex;">
+<mat-action-list>
+  <button mat-list-item (click)="changeTimeScale(1)"> Change to hourly </button>
+  <button mat-list-item (click)="changeTimeScale(12)"> Change to per 5 min </button>
+</mat-action-list>
 <ejs-schedule *ngIf="bookings" #scheduleObj width='70%' height='520px' currentView='WorkWeek' style="margin:auto;margin-top:2%" [workHours]="scheduleHours"  [workDays]='workWeekDays'
-              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale">
+              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
     <ng-template #quickInfoTemplatesHeader let-data>
       <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">
         <div class="e-popup-header">
           <div class="e-header-icon-wrapper">
-            <div *ngIf="data.elementType == 'event'" class="subject">{{data.Subject}} {{data.bookingID}}</div>
-            <button mat-icon-button style="color:white" (click)="openDialog(data.bookingID)">
+            <div *ngIf="data.elementType == 'event'" class="subject"><p style="color:white">{{data.Subject}}</p></div>
+            <button mat-icon-button style="color:white" (click)="openDialog(data.bookingID, data.Id)">
               <mat-icon>delete</mat-icon>
             </button>
             <button class="e-close e-close-icon e-icons" title="Close" (click)="onCloseClick()"></button>
@@ -14,26 +18,30 @@
         </div>
       </div>
     </ng-template>
-<!--    <ng-template #quickInfoTemplatesContent let-data>-->
-<!--      <div *ngIf="data.elementType == 'cell'" class="e-cell-content">-->
-<!--        <form class="e-schedule-form">-->
-<!--          <div style="padding:10px">-->
-<!--            <input class="subject e-field e-input" type="text" name="Subject" placeholder="Opmerking" style="width:100%">-->
-<!--            <select class="custom-select">-->
-<!--              <option value="" disabled>Choose user</option>-->
-<!--              <option *ngFor="let user of users" >{{user.adres}} {{user.huisnr}} {{user.huisext}} {{user.email}} {{user.id}}</option>-->
-<!--            </select>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--&lt;!&ndash;        <div class="start-time" style="text-align: center;">Start: {{data.StartTime.toLocaleString()}}</div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="end-time" style="text-align: center;">End: {{data.EndTime.toLocaleString()}}</div>&ndash;&gt;-->
-<!--    </ng-template>-->
-<!--  <ng-template #quickInfoTemplatesFooter let-data>-->
-<!--    <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">-->
-<!--      <div class="right-button">-->
-<!--        <button class="e-event-create" title="Add" (click)="onAddClick($event)">Toevoegen</button>-->
-<!--      </div>-->
-<!--    </div></ng-template>-->
+    <ng-template #quickInfoTemplatesContent let-data>
+      <div *ngIf="data.elementType == 'cell'" class="e-cell-content">
+        <form class="e-schedule-form">
+          <div style="padding:10px">
+            <input class="subject e-field e-input" type="text" name="Subject" placeholder="Opmerking" style="width:100%">
+            <mat-form-field>
+              <mat-label>User</mat-label>
+              <mat-select [(value)]="selectedUser">
+                <mat-option *ngFor="let user of users" [value]="user.id">
+                  {{user.email}} {{user.adres}} {{user.huisnr}} {{user.huisext}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+        <div class="start-time" style="text-align: center;">Start: {{data.StartTime.toLocaleString()}}</div>
+        <div class="end-time" style="text-align: center;">End: {{data.EndTime.toLocaleString()}}</div>
+    </ng-template>
+  <ng-template #quickInfoTemplatesFooter let-data>
+    <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">
+      <div class="right-button">
+        <button class="e-event-create" title="Add" (click)="onAddClick()">Add</button>
+      </div>
+    </div></ng-template>
 </ejs-schedule>
-
+</div>

@@ -19,6 +19,15 @@
   </mat-select>
 </mat-form-field>
 
+<div class="days">
+  <h4>Select days</h4>
+  <mat-selection-list #dayList (selectionChange)="onSelectionDay($event,  dayList.selectedOptions.selected)">
+    <mat-list-option *ngFor="let day of days" [value]="day">
+      {{day}}
+    </mat-list-option>
+  </mat-selection-list>
+</div>
+
 <div mat-dialog-actions style="display: flex;
     justify-content: space-evenly;margin-top: 5%;">
   <a *ngIf="emailed"> Emailing....</a>

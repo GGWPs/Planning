@@ -76,6 +76,13 @@ export class UserService {
     }
   }
 
+  emailUser(user: User): Observable<User> {
+    return this.http.post<User>(this.emailUserUrl, user, httpOptions)
+      .pipe(
+        catchError(this.handleError('emailUser', user))
+      );
+  }
+
 
   private log(message: string) {
     const messageString = `UserService: ${message}`;
@@ -145,14 +152,6 @@ export class UserService {
 
   getID() {
     return this.id;
-  }
-
-
-  emailUser(user: User): Observable<User> {
-    return this.http.post<User>(this.emailUserUrl, user, httpOptions)
-      .pipe(
-        catchError(this.handleError('emailUser', user))
-      );
   }
 
 }

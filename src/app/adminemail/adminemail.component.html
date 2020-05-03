@@ -1,0 +1,59 @@
+<div style="display:flex;">
+  <div style="width:20%; height:100%;">
+  <h2>Streets:</h2>
+<mat-nav-list *ngIf="streets">
+  <mat-list-item (click)="filterUsers('')"><a matLine>All</a></mat-list-item>
+  <mat-list-item *ngFor="let street of streets">
+    <a matLine (click)="filterUsers(street)">{{ street }}</a>
+  </mat-list-item>
+</mat-nav-list>
+  </div>
+<div style="display:flex;">
+  <div>
+  <h2>Users:</h2>
+<mat-selection-list #usersList *ngIf="filteredUsers" (selectionChange)="onSelection($event,  usersList.selectedOptions.selected)">
+  <mat-list-option *ngFor="let user of filteredUsers" [value]="user">
+    {{user.email}} {{user.adres}} {{user.huisnr}} {{user.huisext}}  <mat-icon class="mat-18">{{user.emailed}}</mat-icon>
+  </mat-list-option>
+  <p>Options selected: {{usersList.selectedOptions.selected.length}}</p>
+</mat-selection-list>
+  </div>
+<div style="display:flex;">
+  <div class="days">
+    <h4>Select days</h4>
+    <mat-selection-list #dayList (selectionChange)="onSelectionDay($event,  dayList.selectedOptions.selected)">
+      <mat-list-option *ngFor="let day of days" [value]="day">
+        {{day}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+  <div class="timeslot">
+    <h4>Select a starting timeslot</h4>
+    <mat-form-field>
+      <mat-label>Start</mat-label>
+      <mat-select [(value)]="start">
+        <mat-option *ngFor="let timeslot of timeslots" [value]="timeslot">
+          {{timeslot}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <h4>Select a end timeslot</h4>
+    <mat-form-field>
+      <mat-label>End</mat-label>
+      <mat-select [(value)]="end">
+        <mat-option *ngFor="let timeslot of timeslots" [value]="timeslot">
+          {{timeslot}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+  <div class="selected">
+    <h4>Selected Emails:</h4>
+    <p *ngFor="let user of selectedUsers"> {{user.email}}</p>
+    <p>{{message}}</p>
+    <p style="color:red">{{error}}</p>
+  </div>
+  <button mat-button (click)="email()">Send emails!</button>
+</div>
+</div>

@@ -16,6 +16,7 @@ export class AdminComponent implements OnInit {
   users: boolean;
   add: boolean;
   map: boolean;
+  email: boolean;
   isAuthenticated: boolean;
   loginError: string;
   form: FormGroup;
@@ -44,6 +45,7 @@ export class AdminComponent implements OnInit {
     this.users = false;
     this.add = false;
     this.map = false;
+    this.email = false;
     if (type === 'booking') {
       this.booking = true;
     }
@@ -55,6 +57,9 @@ export class AdminComponent implements OnInit {
     }
     if (type === 'map') {
       this.map = true;
+    }
+    if (type === 'email') {
+      this.email = true;
     }
   }
 

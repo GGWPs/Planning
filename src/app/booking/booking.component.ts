@@ -85,8 +85,11 @@ export class BookingComponent implements OnInit {
       if (this.user.booked === 'true') {
         this.router.navigate(['booked']);
       }
+      console.log(this.user);
+      this.workWeekDays = this.user.days;
       // this.getTimeSlotsByUser(this.user.timeslotEnd.split(':'), this.user.timeslotStart.split(':'));
       this.scheduleHours = {highlight: true, start: this.user.timeslotStart, end: this.user.timeslotEnd};
+      console.log(this.user);
       await this.getBookings();
       for (const booking of this.bookings.bookings) {
         this.data.push({

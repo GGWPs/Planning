@@ -18,7 +18,6 @@ import {
   MatSortModule,
   MatTableModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
-// import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {
   AgendaService,
   DayService,
@@ -44,6 +43,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AdminmapComponent } from './adminmap/adminmap.component';
 import { BookedComponent } from './booked/booked.component';
 import { CoronaComponent } from './corona/corona.component';
+import { AdminemailComponent } from './adminemail/adminemail.component';
+import {FilteradresPipe} from './filteradres.pipe';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,9 @@ import { CoronaComponent } from './corona/corona.component';
     DialogDeleteComponent,
     DialogDeleteUserComponent,
     DialogConfirmComponent,
-    DialogEmailUserComponent
+    DialogEmailUserComponent,
+    AdminemailComponent,
+    FilteradresPipe
   ],
   entryComponents: [DialogOverviewExampleDialog, DialogDeleteComponent, DialogDeleteUserComponent, DialogConfirmComponent, DialogEmailUserComponent],
   imports: [

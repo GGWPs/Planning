@@ -20,4 +20,6 @@ export class User {
   booked: string;
   timeslotStart: string;
   timeslotEnd: string;
+  emailed: string;
+  days: string[];
 }
