@@ -4,9 +4,9 @@ import {Booking} from './Booking';
 import {catchError, tap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {User} from './User';
-import {Admin} from "./admin/Admin";
-import {AdminToken} from "./admin/AdminToken";
-import {Lists} from "./Lists";
+import {Admin} from './admin/Admin';
+import {Lists} from './Lists';
+import { environment } from './../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,9 +18,11 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  readonly host = 'http://192.168.178.143:8080';
+  readonly host = environment.API_URL;
+  private readonly token = '?token=' + environment.token;
   readonly userUrl =  this.host + '/user';
   readonly addUserUrl =  this.host + '/user/adduser';
+  readonly emailUserUrl =  this.host + '/user/emailuser';
   readonly getUserUrl =  this.host + '/user/';
   readonly getAdmin =  this.host + '/user/admin';
   readonly listUrl =  this.host + '/user/lists';
@@ -144,4 +146,13 @@ export class UserService {
   getID() {
     return this.id;
   }
+
+
+  emailUser(user: User): Observable<User> {
+    return this.http.post<User>(this.emailUserUrl, user, httpOptions)
+      .pipe(
+        catchError(this.handleError('emailUser', user))
+      );
+  }
+
 }

@@ -16,8 +16,7 @@ import {
 } from '@syncfusion/ej2-angular-schedule';
 import {BookingService} from '../booking.service';
 import {Booking} from '../Booking';
-import {DialogData, DialogOverviewExampleDialog} from "../adminusers/adminusers.component";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-adminbooking',
@@ -41,41 +40,13 @@ export class AdminbookingComponent implements OnInit {
   // });
   // public eventSettings: EventSettingsModel = { dataSource: this.dataManger };
 
-  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 8};
+  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 12};
 
   public workWeekDays: number[] = [1, 2, 3, 4, 5];
   public scheduleHours: WorkHoursModel = {highlight: true, start: '8:00', end: '20:00'};
   error: boolean;
   bookings;
-
   users;
-  // onDataBinding(e: { [key: string]: any }): void {
-  //   let items: { [key: string]: any }[] = (e.result as { [key: string]: any }).items as { [key: string]: any }[];
-  //   let scheduleData: any[] = [];
-  //   if (items.length > 0) {
-  //     for (let i: number = 0; i < items.length; i++) {
-  //       let event: { [key: string]: any } = items[i];
-  //       let when: string = (event.start as { [key: string]: any }).dateTime as string;
-  //       let start: string = (event.start as { [key: string]: any }).dateTime as string;
-  //       let end: string = (event.end as { [key: string]: any }).dateTime as string;
-  //       if (!when) {
-  //         when = (event.start as { [key: string]: any }).date as string;
-  //         start = (event.start as { [key: string]: any }).date as string;
-  //         end = (event.end as { [key: string]: any }).date as string;
-  //       }
-  //       scheduleData.push({
-  //         Id: event.id,
-  //         Subject: event.summary,
-  //         StartTime: new Date(start),
-  //         EndTime: new Date(end),
-  //         IsAllDay: !(event.start as { [key: string]: any }).dateTime
-  //       });
-  //     }
-  //   }
-  //   e.result = scheduleData;
-  // }
-
-
   constructor(private bookingService: BookingService, private userService: UserService, public dialog: MatDialog) { }
 
   async ngOnInit() {
@@ -85,25 +56,12 @@ export class AdminbookingComponent implements OnInit {
 
   async loadBookings() {
     await this.getBookings();
-    for (const booking of this.bookings.bookings) {
-      this.getUser(booking);
+    if (Array.isArray(this.bookings.bookings) && this.bookings.bookings.length) {
+      for (const booking of this.bookings.bookings) {
+        this.getUser(booking);
+      }
     }
   }
-
-  public onActionBegin(args: ActionEventArgs & ToolbarActionArgs): void {
-    if (args.requestType === 'toolbarItemRendering') {
-      const exportItem: ItemModel = {
-        align: 'Right', showTextOn: 'Both', prefixIcon: 'e-icon-schedule-excel-export',
-        text: 'Excel Export', cssClass: 'e-excel-export', click: this.onExportClick.bind(this)
-      };
-      args.items.push(exportItem);
-    }
-  }
-  public onExportClick(): void {
-    this.scheduleObj.exportToExcel();
-  }
-
-
   getUser(booking: Booking) {
     return new Promise(resolve => {
       this.userService.getUser(booking.id)
@@ -111,7 +69,8 @@ export class AdminbookingComponent implements OnInit {
           const user2 = user as User;
           this.data.push({
             Id: this.data.length + 1,
-            Subject: user2.adres + ' ' + user2.huisnr,
+            Subject: user2.adres + ' ' + user2.huisnr + ' Naam: ' +
+              user2.achternaam + '  DP: ' + user2.dp + '  Telefoon: ' + user2.telefoon,
             StartTime: new Date(booking.start),
             EndTime: new Date(booking.end),
             bookingID: booking.bookingID
@@ -148,6 +107,7 @@ export class AdminbookingComponent implements OnInit {
             this.error = false;
             eventData.Id = this.scheduleObj.eventBase.getEventMaxID() as number + 1;
             this.scheduleObj.addEvent(eventData);
+            console.log(eventData);
           }
         }
       }
@@ -205,7 +165,7 @@ export class AdminbookingComponent implements OnInit {
 export class DialogConfirmComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+              @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
     this.dialogRef.close('no');

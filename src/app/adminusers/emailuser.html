@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Email user {{data.user.achternaam}} with email {{data.user.email}}?</h1>
+<h4>Select a starting timeslot</h4>
+<mat-form-field>
+  <mat-label>Start</mat-label>
+  <mat-select [(value)]="start">
+    <mat-option *ngFor="let timeslot of timeslots" [value]="timeslot">
+      {{timeslot}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h4>Select a end timeslot</h4>
+<mat-form-field>
+  <mat-label>End</mat-label>
+  <mat-select [(value)]="end">
+    <mat-option *ngFor="let timeslot of timeslots" [value]="timeslot">
+      {{timeslot}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div mat-dialog-actions style="display: flex;
+    justify-content: space-evenly;margin-top: 5%;">
+  <a *ngIf="emailed"> Emailing....</a>
+  <button mat-button color="red"(click)="email()">Email</button>
+  <button mat-button (click)="onNoClick()">Back</button>
+</div>

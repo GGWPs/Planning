@@ -2,8 +2,8 @@
 <div class="form" style="display: flex; justify-content: center;">
   <p>Wählen Sie eine Zeit, die zu Ihnen passt</p>
   <p class="error"*ngIf="error">Datum in der Vergangenheit</p>
-<ejs-schedule *ngIf="this.bookings" #scheduleObj width='70%' height='520px' currentView='WorkWeek' [workHours]="scheduleHours" [views]="scheduleViews" [workDays]='workWeekDays'
-              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
+<ejs-schedule *ngIf="this.bookings && this.user" #scheduleObj width='70%' height='520px' currentView='WorkWeek' [workHours]="scheduleHours" [views]="scheduleViews" [workDays]='workWeekDays'
+              startHour='{{this.user.timeslotStart}}' endHour='{{this.user.timeslotEnd}}' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
 <!--  <ng-template #quickInfoTemplatesHeader let-data>-->
 <!--    <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">-->
 <!--      <div class="e-popup-header">-->
@@ -28,9 +28,10 @@
   <ng-template #quickInfoTemplatesFooter let-data>
   <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">
     <div class="right-button">
-      <button class="e-event-create" title="Add" (click)="onAddClick($event)">hinzufügene</button>
+      <button class="e-event-create" title="Add" (click)="onAddClick()">hinzufügene</button>
     </div>
-  </div></ng-template> </ejs-schedule>
+  </div></ng-template>
+</ejs-schedule>
 </div>
 
 

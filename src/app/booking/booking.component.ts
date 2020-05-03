@@ -45,6 +45,7 @@ export class BookingComponent implements OnInit {
   id: string;
   bookings;
   user;
+  test = '12:00';
 
 
 
@@ -55,14 +56,15 @@ export class BookingComponent implements OnInit {
     EndTime: new Date(2020, 3, 20, 13, 5),
     IsBlock: true,
   },
-    {
-      Id: 3,
-      Subject: 'Non working hours',
-      StartTime: new Date(2019, 1, 1, 20, 0),
-      EndTime: new Date(2019, 1, 2, 8, 0),
-      RecurrenceRule: 'FREQ=DAILY;INTERVAL=1;',
-      IsBlock: true
-    }];
+    // {
+    //   Id: 3,
+    //   Subject: 'Non Working Hours',
+    //   StartTime: new Date(2019, 1, 1, 20, 0),
+    //   EndTime: new Date(2019, 1, 2, 8, 0),
+    //   RecurrenceRule: 'FREQ=DAILY;INTERVAL=1;',
+    //   IsBlock: true
+    // }
+    ];
   public selectedDate: Date = new Date();
   public eventSettings: EventSettingsModel = {
     dataSource: this.data
@@ -83,11 +85,13 @@ export class BookingComponent implements OnInit {
       if (this.user.booked === 'true') {
         this.router.navigate(['booked']);
       }
+      // this.getTimeSlotsByUser(this.user.timeslotEnd.split(':'), this.user.timeslotStart.split(':'));
+      this.scheduleHours = {highlight: true, start: this.user.timeslotStart, end: this.user.timeslotEnd};
       await this.getBookings();
       for (const booking of this.bookings.bookings) {
         this.data.push({
           Id: this.data.length + 1,
-          Subject: 'Bezet',
+          Subject: 'Besetz',
           StartTime: new Date(booking.start),
           EndTime: new Date(booking.end),
           IsBlock: true,
@@ -99,6 +103,17 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  //
+  // getTimeSlotsByUser(val: any, val2: any) {
+  //   this.data.push({
+  //     Id: 4,
+  //     Subject: 'Time not available!',
+  //     StartTime: new Date(2019, 1, 1, val[0], val[1]),
+  //     EndTime: new Date(2019, 1, 2, val2[0], val[1]),
+  //     RecurrenceRule: 'FREQ=DAILY;INTERVAL=1;',
+  //     IsBlock: true
+  //   });
+  // }
 
   getBookings() {
     return new Promise(resolve => {

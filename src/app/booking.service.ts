@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Booking} from './Booking';
 import {Observable, of} from 'rxjs';
-import {User} from "./User";
+import { environment } from './../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,8 +16,8 @@ const httpOptions = {
 })
 export class BookingService {
   bookingData: any;
-  private readonly  token = '?token=tlolij4pfnRETWQ7kTA8';
-  readonly host = 'http://localhost:8080';
+  private readonly token = '?token=' + environment.token;
+  readonly host = environment.API_URL;
   readonly bookingsUrl =  this.host + '/bookings';
   readonly addBookingUrl = this.host + '/bookings/addbooking';
 

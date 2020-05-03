@@ -48,13 +48,13 @@
     </ng-container>
 
     <ng-container matColumnDef="emailsent">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Emailed? </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Emailed </th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon class="mat-18">clear</mat-icon>
+        <mat-icon class="mat-18">{{element.emailed}}</mat-icon>
       </td>
     </ng-container>
     <ng-container matColumnDef="booked?">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Afspraak </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Booked </th>
     <td mat-cell *matCellDef="let element">
       <mat-icon class="mat-18">{{element.booked}}</mat-icon>
     </td>
@@ -73,7 +73,7 @@
     <ng-container matColumnDef="details">
       <th mat-header-cell *matHeaderCellDef> Details </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary" (click)="redirectToDetails(element.id)">
+        <button mat-icon-button color="primary" (click)="redirectToDetails(element)">
           <mat-icon class="mat-18">reorder</mat-icon>
         </button>
       </td>
@@ -82,8 +82,8 @@
     <ng-container matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary" (click)="redirectToUpdate(element.id)">
-          <mat-icon class="mat-18">maile</mat-icon>
+        <button mat-icon-button color="primary" (click)="redirectToEmail(element)">
+          <mat-icon class="mat-18">email</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -91,7 +91,7 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef> Delete </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="warn" (click)="redirectToDelete(element.id)">
+        <button mat-icon-button color="warn" (click)="redirectToDelete(element)">
           <mat-icon class="mat-18">delete</mat-icon>
         </button>
       </td>

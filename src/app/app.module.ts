@@ -14,11 +14,11 @@ import {
   MatButtonModule, MatCardModule,
   MatFormFieldModule,
   MatIconModule,
-  MatListModule, MatPaginatorModule, MatProgressBarModule,
+  MatListModule, MatPaginatorModule, MatProgressBarModule, MatSelectModule,
   MatSortModule,
   MatTableModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+// import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {
   AgendaService,
   DayService,
@@ -35,7 +35,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminaddComponent } from './adminadd/adminadd.component';
 import {
   AdminusersComponent,
-  DialogDeleteComponent, DialogDeleteUserComponent,
+  DialogDeleteComponent, DialogDeleteUserComponent, DialogEmailUserComponent,
   DialogOverviewExampleDialog
 } from './adminusers/adminusers.component';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
@@ -62,9 +62,10 @@ import { CoronaComponent } from './corona/corona.component';
     CoronaComponent,
     DialogDeleteComponent,
     DialogDeleteUserComponent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    DialogEmailUserComponent
   ],
-  entryComponents: [DialogOverviewExampleDialog, DialogDeleteComponent, DialogDeleteUserComponent, DialogConfirmComponent],
+  entryComponents: [DialogOverviewExampleDialog, DialogDeleteComponent, DialogDeleteUserComponent, DialogConfirmComponent, DialogEmailUserComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -78,7 +79,6 @@ import { CoronaComponent } from './corona/corona.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    NgxMaterialTimepickerModule,
     ScheduleModule,
     HttpClientModule,
     MatListModule,
@@ -92,6 +92,7 @@ import { CoronaComponent } from './corona/corona.component';
     MatProgressBarModule,
     MatToolbarModule,
     MatTabsModule,
+    MatSelectModule,
   ],
   providers: [DayService,
     WeekService,

@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core
 import {MatSort, MatTableDataSource, MatPaginator, MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {User} from '../User';
 import {UserService} from '../user.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 export interface DialogData {
@@ -77,7 +77,6 @@ export class AdminusersComponent implements OnInit, AfterViewInit {
       this.userService.getUser(id)
         .subscribe(user => {
           this.user = user;
-          this.openDialog('user', '');
           resolve();
         });
     });
@@ -97,8 +96,8 @@ export class AdminusersComponent implements OnInit, AfterViewInit {
   openDialog(val: string, val2: any): void {
     if (val === 'user') {
       const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-        width: '50%',
-        height: '50%',
+        width: '40%',
+        height: '70%',
         data: {user: this.user}
       });
 
@@ -111,44 +110,60 @@ export class AdminusersComponent implements OnInit, AfterViewInit {
         }
       });
     }
-    let deletedialog
+    let dialog;
     if (val === 'deleteList') {
-      deletedialog = this.dialog.open(DialogDeleteComponent, {
+      dialog = this.dialog.open(DialogDeleteComponent, {
         width: '40%',
         height: '25%',
         data: {list: val2}
       });
-      deletedialog.afterClosed().subscribe(result => {
+      dialog.afterClosed().subscribe(result => {
         if (result !== undefined) {
           this.lists = result;
         }
         });
     }
     if (val === 'deleteUser') {
-      deletedialog = this.dialog.open(DialogDeleteUserComponent, {
+      dialog = this.dialog.open(DialogDeleteUserComponent, {
         width: '40%',
         height: '25%',
         data: {user: this.user}
       });
-      deletedialog.afterClosed().subscribe(result => {
+      dialog.afterClosed().subscribe(result => {
         if (result !== undefined) {
           this.users = result;
-          this.dataSource.data = result.userArray;}
+          this.dataSource.data = result.userArray; }
         });
+    }
+
+    if (val === 'emailUser') {
+      dialog = this.dialog.open(DialogEmailUserComponent, {
+        width: '40%',
+        height: '40%',
+        data: {user: this.user}
+      });
+      dialog.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+          this.getUsers(); }
+      });
     }
   }
 
 
-  public redirectToDetails = (id: string) => {
-    this.getUser(id);
+  public redirectToDetails = (val: User) => {
+    this.user = val;
+    this.openDialog('user', '');
   }
 
-  public redirectToUpdate = (id: string) => {
-
+  public redirectToEmail = (user: User) => {
+    this.user = user;
+    this.openDialog('emailUser', '');
   }
 
-  public redirectToDelete = (id: string) => {
-    this.getUserToDelete(id);
+  public redirectToDelete = (user: User) => {
+    this.user = user;
+    this.openDialog('deleteUser', '');
+    // this.getUserToDelete(id);
   }
 
   delete(val: any) {
@@ -197,7 +212,7 @@ export class DialogOverviewExampleDialog {
     this.dialogRef.close(this.edited);
   }
 
-  edit(){
+  edit() {
     this.editMode = true;
   }
 
@@ -252,14 +267,14 @@ export class DialogOverviewExampleDialog {
 export class DialogDeleteComponent {
 
   constructor(private userService: UserService,
-    public dialogRef: MatDialogRef<DialogDeleteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+              public dialogRef: MatDialogRef<DialogDeleteComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  delete(val: string){
+  delete(val: string) {
     this.userService.removeList(val)
       .then(lists => this.dialogRef.close(lists))
       .catch(any2 => { console.log('rejected!');
@@ -275,7 +290,7 @@ export class DialogDeleteUserComponent {
 
   constructor(private userService: UserService,
               public dialogRef: MatDialogRef<DialogDeleteComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+              @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -286,5 +301,38 @@ export class DialogDeleteUserComponent {
       .then(users => this.dialogRef.close(users))
       .catch(any2 => { console.log('rejected!');
       });
+  }
+}
+
+@Component({
+  selector: 'DialogEmailUser',
+  templateUrl: 'emailuser.html',
+})
+export class DialogEmailUserComponent {
+
+  start: string;
+  end: string;
+  emailed: boolean;
+
+  timeslots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+  constructor(private userService: UserService,
+              public dialogRef: MatDialogRef<DialogEmailUserComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) { this.start = '08:00';  this.end = '20:00'; }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  email() {
+    if (!this.emailed) {
+      this.emailed = true;
+      this.data.user.timeslotStart = this.start;
+      this.data.user.timeslotEnd = this.end;
+      this.userService
+        .emailUser(this.data.user)
+        .subscribe(resp => {
+          this.dialogRef.close('emailed');
+        });
+    }
   }
 }

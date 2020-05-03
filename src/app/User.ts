@@ -18,4 +18,6 @@ export class User {
   email: string;
   fileName: string;
   booked: string;
+  timeslotStart: string;
+  timeslotEnd: string;
 }
