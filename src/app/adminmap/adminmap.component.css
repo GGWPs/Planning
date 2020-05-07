@@ -1,7 +1,17 @@
 .mgl-map {
   height: 70%;
-  /*width: 100%;*/
+  /*height: 50vw;*/
   display: contents;
+}
+
+.map {
+  height: 50vw;
+  margin-bottom: 10%;
+}
+@media (max-width: 750px) {
+  .map {
+    height: 80vw;
+  }
 }
 
 

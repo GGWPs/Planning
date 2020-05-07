@@ -19,13 +19,12 @@ export class ConfirmbookingComponent implements OnInit {
   endTime: any;
   comment = '';
   testDate: Date;
-  testDate2: Date;
   user: User;
 
   ngOnInit() {
     this.bookingData = this.bookingService.retrieveData();
-    this.user = this.userService.getUserData();
     console.log(this.bookingData);
+    this.user = this.userService.getUserData();
     if (this.bookingData === undefined) {
       this.router.navigate(['booking']);
     } else {
@@ -33,7 +32,7 @@ export class ConfirmbookingComponent implements OnInit {
         if (this.bookingData.hasOwnProperty(key)) {
           const value = this.bookingData[key];
           if (key === 'StartTime') {
-            this.testDate = value;
+            this.testDate = new Date(value);
             const date = value.toString().split(' ', 5);
             for (const e of date) {
               if (e !== undefined) {
@@ -42,8 +41,7 @@ export class ConfirmbookingComponent implements OnInit {
             }
           }
           if (key === 'EndTime') {
-            this.endTime = value;
-            this.testDate2 = value;
+            this.endTime = new Date(value);
           }
           if (key === 'Subject') {
             this.comment = value;
@@ -54,7 +52,7 @@ export class ConfirmbookingComponent implements OnInit {
   }
 
   onClickMe() {
-    const booking = new Booking(this.userService.getID(), this.testDate.toISOString(), this.testDate2.toISOString(), this.comment, false);
+    const booking = new Booking(this.userService.getID(), this.testDate.toISOString(), this.endTime.toISOString(), this.comment, false);
     this.addBooking(booking);
   }
 

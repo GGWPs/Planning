@@ -5,5 +5,16 @@
   align-items: center;
   flex-direction: column;
 }
+.booking {
+  display: flex;
+}
+
+
+@media (max-width: 900px) {
+  .booking{
+    display: grid;
+  }
+}
+
 
 

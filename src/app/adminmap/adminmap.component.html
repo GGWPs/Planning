@@ -1,13 +1,12 @@
-<div>  <h2>Lists: </h2>
-  <mat-selection-list #selectedList *ngIf="lists" (click)="filterList($event)">
-    <mat-list-option *ngFor="let item of lists.lists">
-      {{item.fileName}}
-    </mat-list-option>
-    <p>
-      options: {{selectedList.selectedOptions.selected}}
-      Options selected: {{selectedList.selectedOptions.selected.length}}
-    </p>
-  </mat-selection-list></div><div  class="map" style="height: 50vw;display:grid;   "><mgl-map
+<div *ngIf="lists">  <h2 >Lists: </h2>
+    <mat-form-field>
+      <mat-label>List</mat-label>
+      <mat-select [(ngModel)]="selected" name="list">
+        <mat-option *ngFor="let item of lists.lists" [value]="item.fileName">
+          {{item.fileName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field></div><div  class="map" style="display:grid;   "><mgl-map
   [style]="'mapbox://styles/mapbox/streets-v9'"
   [zoom]="[7]"
   [center]="[ 9.404954, 52.520008]"

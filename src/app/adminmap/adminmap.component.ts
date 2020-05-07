@@ -16,6 +16,7 @@ export class AdminmapComponent implements OnInit {
   points: GeoJSON.FeatureCollection<GeoJSON.Point>;
   selectedPoint: MapboxGeoJSONFeature | null;
   cursorStyle: string;
+  selected;
 
   onLoad(mapInstance: Map) {
     // tslint:disable-next-line:no-non-null-assertion

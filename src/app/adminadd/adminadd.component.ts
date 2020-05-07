@@ -3,7 +3,6 @@ import * as XLSX from 'xlsx';
 import {User} from '../User';
 import {UserService} from '../user.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Admin} from "../admin/Admin";
 
 @Component({
   selector: 'app-adminadd',

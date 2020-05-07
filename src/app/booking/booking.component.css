@@ -11,3 +11,18 @@
   color:red;
 }
 
+.custom-event-editor .e-textlabel {
+  padding-right: 15px;
+  text-align: right;
+}
+
+.custom-event-editor td {
+  padding: 7px;
+  padding-right: 16px;
+}
+
+
+.schedule-cell-dimension.e-schedule .e-vertical-view .e-time-cells-wrap table td,
+.schedule-cell-dimension.e-schedule .e-vertical-view .e-work-cells {
+  height: 100px;
+}

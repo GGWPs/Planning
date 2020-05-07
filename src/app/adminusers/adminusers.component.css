@@ -27,3 +27,9 @@ th.mat-header-cell {
 .manual {
 
 }
+
+.addButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10%;
+}

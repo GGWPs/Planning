@@ -13,17 +13,20 @@ import {
   MonthService,
   AgendaService,
   TimeScaleModel,
-  PopupOpenEventArgs
+  PopupOpenEventArgs, RenderCellEventArgs, ActionEventArgs
 } from '@syncfusion/ej2-angular-schedule';
-import {ButtonComponent} from '@syncfusion/ej2-angular-buttons';
 import {BookingService} from '../booking.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../user.service';
+import {formatDate} from '@angular/common';
+import { createElement } from '@syncfusion/ej2-base';
 
 L10n.load({
   'en-US': {
     schedule: {
-      addTitle : 'Kommentar'
+      addTitle : 'Kommentar',
+      saveButton: 'hinzufugen',
+      newEvent: 'hinzufügen'
     }
   }
 });
@@ -37,16 +40,15 @@ L10n.load({
 export class BookingComponent implements OnInit {
   @ViewChild('scheduleObj', {static: false})
   public scheduleObj: ScheduleComponent;
-  @ViewChild('addButton', {static: false})
-  public addButton: ButtonComponent;
   public workWeekDays: number[] = [1, 2, 3, 4, 5];
   public scheduleHours: WorkHoursModel = {highlight: true, start: '8:00', end: '20:00'};
   error: boolean;
   id: string;
   bookings;
   user;
-  test = '12:00';
-
+  limit = 8;
+  numArray = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  countArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 
   public data: object[] = [{
@@ -69,8 +71,8 @@ export class BookingComponent implements OnInit {
   public eventSettings: EventSettingsModel = {
     dataSource: this.data
   };
-  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 12};
-  public scheduleViews: View[] = ['WorkWeek'];
+  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 1};
+  public scheduleViews: View[] = ['WorkWeek', 'Month'];
 
   constructor(private bookingService: BookingService,
               private userService: UserService,
@@ -82,41 +84,94 @@ export class BookingComponent implements OnInit {
     if (this.id !== null) {
       this.userService.setID(this.id);
       await this.getUser(this.id);
-      if (this.user.booked === 'true') {
+      if (this.user === null) {
+        this.router.navigate(['NotFound']);
+      } else if (this.user.booked === 'check') {
         this.router.navigate(['booked']);
       }
-      console.log(this.user);
-      this.workWeekDays = this.user.days;
-      // this.getTimeSlotsByUser(this.user.timeslotEnd.split(':'), this.user.timeslotStart.split(':'));
-      this.scheduleHours = {highlight: true, start: this.user.timeslotStart, end: this.user.timeslotEnd};
+      if (Array.isArray(this.user.days) && this.user.days.length) {
+        this.workWeekDays = this.user.days;
+      }
+      if (this.user.timeslotStart !== undefined) {
+        this.scheduleHours = {highlight: true, start: this.user.timeslotStart, end: this.user.timeslotEnd};
+      }
       console.log(this.user);
       await this.getBookings();
+      let full = false;
       for (const booking of this.bookings.bookings) {
-        this.data.push({
-          Id: this.data.length + 1,
-          Subject: 'Besetz',
-          StartTime: new Date(booking.start),
-          EndTime: new Date(booking.end),
-          IsBlock: true,
-        });
-        console.log(this.data);
+        const indexHour = this.numArray.indexOf(new Date(booking.start).getHours());
+        this.countArray[indexHour]++;
+        if (this.countArray[indexHour] >= this.limit) {
+          full = true;
+        }
+        if (full) {
+          this.data.push({
+            Id: this.data.length + 1,
+            Subject: 'Besetz',
+            StartTime: new Date(booking.start),
+            EndTime: new Date(booking.end),
+            IsBlock: full,
+          });
+        }
       }
     } else {
       this.router.navigate(['NotFound']);
     }
   }
 
-  //
-  // getTimeSlotsByUser(val: any, val2: any) {
-  //   this.data.push({
-  //     Id: 4,
-  //     Subject: 'Time not available!',
-  //     StartTime: new Date(2019, 1, 1, val[0], val[1]),
-  //     EndTime: new Date(2019, 1, 2, val2[0], val[1]),
-  //     RecurrenceRule: 'FREQ=DAILY;INTERVAL=1;',
-  //     IsBlock: true
-  //   });
+  OnEventRendered(args) {
+    // The below code examples used to apply the background color to the appointments
+    let categoryColor;
+    if (args.data.Street === 'Tolhuis') {
+      categoryColor = 'green';
+    } else if (args.data.Street === 'UnAssigned') {
+      categoryColor = 'red';
+    }
+    args.element.style.backgroundColor = categoryColor;
+  }
+
+  // test(val: any) {
+  //   console.log('called!' + val);
   // }
+  // getMajorTime(date: Date): string {
+  //   // return this.instance.formatDate(date, { skeleton: 'hm' });
+  //   // return formatDate(date,{ skeleton: 'hm' }, locale);
+  //   // return date.getHours().toString();
+  //
+  //   return '<a>'
+  // }
+
+  onRenderCell(args: RenderCellEventArgs): void {
+    if (args.elementType === 'workCells' || args.elementType === 'monthCells') {
+      const weekEnds: number[] = [1, 6];
+      if (weekEnds.indexOf((args.date).getDay()) >= 0) {
+        const ele: HTMLElement = createElement('div', {
+          innerHTML: '<img src=\'https://ej2.syncfusion.com/demos/src/schedule/images/newyear.svg\' />',
+          className: 'templatewrap'
+        });
+        (args.element).appendChild(ele);
+      }
+    }
+  }
+
+  getMonthCellText(date: Date): string {
+    if (date.getMonth() === 4 && date.getDate() === 5) {
+      return '<img src= "https://ej2.syncfusion.com/demos/src/schedule/images/birthday.svg" />';
+    } else if (date.getMonth() === 4 && date.getDate() === 6) {
+      return '<img src= "https://ej2.syncfusion.com/demos/src/schedule/images/get-together.svg" />';
+    } else if (date.getMonth() === 4 && date.getDate() === 13) {
+      return '<img src= "https://ej2.syncfusion.com/demos/src/schedule/images/birthday.svg" />';
+    }
+    return '';
+  }
+
+  getWorkCellText(date: Date): string {
+    const weekEnds: number[] = [0, 6];
+    if (date.getMonth() === 4 && date.getDate() === 13) {
+      return '<img src=\'https://ej2.syncfusion.com/demos/src/schedule/images/newyear.svg\' />';
+    }
+    return '';
+  }
 
   getBookings() {
     return new Promise(resolve => {
@@ -140,8 +195,59 @@ export class BookingComponent implements OnInit {
   }
 
   onPopupOpen(args: PopupOpenEventArgs): void {
-    if (args.type === 'Editor') {
-      args.cancel = true;
+     if (args.type === 'Editor') {
+      const statusElement: HTMLInputElement = args.element.querySelector('#EventType') as HTMLInputElement;
+      // let startElement: HTMLInputElement = args.element.querySelector('#StartTime') as HTMLInputElement;
+      // if (!startElement.classList.contains('e-datetimepicker')) {
+      //   new DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
+      // }
+      // let endElement: HTMLInputElement = args.element.querySelector('#EndTime') as HTMLInputElement;
+      // if (!endElement.classList.contains('e-datetimepicker')) {
+      //   new DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
+      // }
+      // let startElement: HTMLInputElement = args.element.querySelector('#StartTime') as HTMLInputElement;
+      // if (!startElement.classList.contains('e-datetimepicker')) {
+      //   new DateTimePicker({ value: new Date(startElement.value) || new Date() }, startElement);
+      // }
+      // let endElement: HTMLInputElement = args.element.querySelector('#EndTime') as HTMLInputElement;
+      // if (!endElement.classList.contains('e-datetimepicker')) {
+      //   new DateTimePicker({ value: new Date(endElement.value) || new Date() }, endElement);
+      // }
+      // let processElement: HTMLInputElement= args.element.querySelector('#OwnerId');
+      // if (!processElement.classList.contains('e-multiselect')) {
+      //   let multiSelectObject: MultiSelect = new MultiSelect({
+      //     placeholder: 'Choose a owner',
+      //     fields: { text: 'text', value: 'id'},
+      //     dataSource: <any>this.ownerDataSource,
+      //     value: <string[]>((args.data.OwnerId instanceof Array) ? args.data.OwnerId : [args.data.OwnerId])
+      //   });
+      //   multiSelectObject.appendTo(processElement);
+      // }
+    }
+  }
+
+  onActionBegin(args: ActionEventArgs): void {
+    if (args.requestType === 'eventCreate') { // while creating new event
+      const eventData = args.data[0];
+      this.bookingService.setData(eventData);
+      for (const key in eventData) {
+        if (eventData.hasOwnProperty(key)) {
+          const value = eventData[key];
+          if (key === 'StartTime') {
+            const currentDate = new Date();
+            const appointmentDate = new Date(value.toString());
+            if (currentDate > appointmentDate) {
+              this.error = true;
+            } else {
+              this.error = false;
+              if (eventData.Subject === 'Kommentar') {
+                eventData.Subject = '';
+              }
+              this.router.navigate(['confirmbooking']);
+            }
+          }
+        }
+      }
     }
   }
 

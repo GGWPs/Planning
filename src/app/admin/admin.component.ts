@@ -4,6 +4,7 @@ import {Map, MapboxGeoJSONFeature, MapLayerMouseEvent, SymbolLayout} from 'mapbo
 import {UserService} from "../user.service";
 import {Admin} from "./Admin";
 import {User} from "../User";
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-admin',
@@ -25,6 +26,7 @@ export class AdminComponent implements OnInit {
   private returnUrl: string;
   lists;
   hide = true;
+  encPassword = 'Encrypt123124';
 
 
   constructor(private fb: FormBuilder, private userService: UserService) {
@@ -33,7 +35,9 @@ export class AdminComponent implements OnInit {
 
 
   async ngOnInit() {
-
+    this.userService.change.subscribe(value => {
+      this.toggle(value);
+    });
     this.form = this.fb.group({
       username: ['', Validators.email],
       password: ['', Validators.required]
@@ -86,6 +90,7 @@ export class AdminComponent implements OnInit {
         const admin = new Admin();
         admin.user = this.form.get('username').value;
         admin.password = this.form.get('password').value;
+        console.log(CryptoJS.AES.encrypt(admin.password.trim(), this.encPassword.trim()).toString());
         await this.getAdmin(admin);
       } catch (err) {
         this.loginInvalid = true;

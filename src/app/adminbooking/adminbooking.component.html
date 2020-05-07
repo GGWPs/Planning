@@ -1,10 +1,10 @@
-<div style="display: flex;">
+<div class="booking">
 <mat-action-list>
   <button mat-list-item (click)="changeTimeScale(1)"> Change to hourly </button>
   <button mat-list-item (click)="changeTimeScale(12)"> Change to per 5 min </button>
 </mat-action-list>
-<ejs-schedule *ngIf="bookings" #scheduleObj width='70%' height='520px' currentView='WorkWeek' style="margin:auto;margin-top:2%" [workHours]="scheduleHours"  [workDays]='workWeekDays'
-              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
+<ejs-schedule *ngIf="bookings" #scheduleObj width='70%' height='520px' currentView='WorkWeek' style="margin:auto;margin-top:2%" [workHours]="scheduleHours"  [workDays]='workWeekDays' [allowResizing]="true"
+              startHour='08:00' endHour='20:00' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale">
     <ng-template #quickInfoTemplatesHeader let-data>
       <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">
         <div class="e-popup-header">
@@ -25,11 +25,9 @@
             <input class="subject e-field e-input" type="text" name="Subject" placeholder="Opmerking" style="width:100%">
             <mat-form-field>
               <mat-label>User</mat-label>
-              <mat-select [(value)]="selectedUser">
-                <mat-option *ngFor="let user of users" [value]="user.id">
-                  {{user.email}} {{user.adres}} {{user.huisnr}} {{user.huisext}}
-                </mat-option>
-              </mat-select>
+              <select matNativeControl [(ngModel)]="selectedUser" name="user">
+                <option *ngFor="let user of users" [value]="user.id">  {{user.email}} {{user.adres}} {{user.huisnr}} {{user.huisext}}</option>
+              </select>
             </mat-form-field>
           </div>
         </form>
@@ -37,6 +35,36 @@
         <div class="start-time" style="text-align: center;">Start: {{data.StartTime.toLocaleString()}}</div>
         <div class="end-time" style="text-align: center;">End: {{data.EndTime.toLocaleString()}}</div>
     </ng-template>
+  <ng-template #editorTemplate>
+    <table class="custom-event-editor" width="100%" cellpadding="5">
+      <mat-form-field>
+        <mat-label>User</mat-label>
+        <select matNativeControl [(ngModel)]="selectedUser" name="user">
+          <option *ngFor="let user of users" [value]="user.id">{{user.adres}} {{user.huisnr}} {{user.huisext}}  {{user.email}} </option>
+        </select>
+      </mat-form-field>
+      <tbody>
+      <tr>
+        <td class="e-textlabel">Kommentar</td>
+        <td colspan="4">
+          <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">From</td>
+        <td colspan="4">
+          <input id="StartTime" class="e-field" type="text" name="StartTime" />
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">To</td>
+        <td colspan="4">
+          <input id="EndTime" class="e-field" type="text" name="EndTime" />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-template>
   <ng-template #quickInfoTemplatesFooter let-data>
     <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">
       <div class="right-button">

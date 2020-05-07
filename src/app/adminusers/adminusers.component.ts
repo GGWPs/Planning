@@ -167,6 +167,11 @@ export class AdminusersComponent implements OnInit, AfterViewInit {
   delete(val: any) {
     this.openDialog('deleteList', val);
   }
+
+  setData() {
+    this.userService.setData('add');
+
+  }
 }
 
 

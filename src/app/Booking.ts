@@ -6,6 +6,7 @@ export class Booking {
   end: string;
   comment: string;
   confirmed: boolean;
+  street: string;
 
 
   constructor(id: string, start: string, end: string, comment: string, confirmed: boolean) {

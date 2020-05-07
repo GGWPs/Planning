@@ -41,7 +41,7 @@ export class AdminbookingComponent implements OnInit {
   // });
   // public eventSettings: EventSettingsModel = { dataSource: this.dataManger };
 
-  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 12};
+  public timeScale: TimeScaleModel = {enable: true, interval: 60, slotCount: 1};
 
   public workWeekDays: number[] = [1, 2, 3, 4, 5];
   public scheduleHours: WorkHoursModel = {highlight: true, start: '8:00', end: '20:00'};
@@ -130,6 +130,7 @@ export class AdminbookingComponent implements OnInit {
         }
       }
     }
+    console.log(this.selectedUser);
     eventData.Id = this.scheduleObj.eventBase.getEventMaxID() as number + 1;
     this.scheduleObj.addEvent(eventData);
     if (this.userID !== undefined) {

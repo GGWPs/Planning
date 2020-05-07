@@ -1,4 +1,4 @@
-<div *ngIf="isAuthenticated">
+<div *ngIf="!isAuthenticated">
   <mat-card>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -27,13 +27,11 @@
   </mat-card>
 </div>
 <div *ngIf="!isAuthenticated">
-  <mat-toolbar style="justify-content: center;">
-<div class="header">
-  <button mat-button color="primary" (click)="toggle('booking')" style="margin-right:20px">Book</button>
-  <button mat-button color="primary" (click)="toggle('users')" style="margin-right:20px">Users</button>
-  <button mat-button color="primary" (click)="toggle('add')" style="margin-right:20px">Add Users</button>
-  <button mat-button color="primary" (click)="toggle('map')" style="margin-right:20px">Map</button>
-  <button mat-button color="primary" (click)="toggle('email')" style="margin-right:20px">Email</button></div>
+  <mat-toolbar style="cursor: pointer; justify-content: space-evenly;">
+    <a (click)="toggle('booking')" style="margin-right:5px">Book</a>
+    <a (click)="toggle('users')" style="margin-right:5px">Users</a>
+  <a (click)="toggle('map')" style="margin-right:5px">Map</a>
+  <a (click)="toggle('email')" style="margin-right:5px">Email</a>
   </mat-toolbar>
 <ng-container *ngIf="booking"><app-adminbooking></app-adminbooking></ng-container>
 <ng-container *ngIf="users"><app-adminusers></app-adminusers></ng-container>

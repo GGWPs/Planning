@@ -3,7 +3,7 @@
   <p>Wählen Sie eine Zeit, die zu Ihnen passt</p>
   <p class="error"*ngIf="error">Datum in der Vergangenheit</p>
 <ejs-schedule *ngIf="this.bookings && this.user" #scheduleObj width='70%' height='520px' currentView='WorkWeek' [workHours]="scheduleHours" [views]="scheduleViews" [workDays]='workWeekDays'
-              startHour='{{this.user.timeslotStart}}' endHour='{{this.user.timeslotEnd}}' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)'>
+              startHour='{{this.user.timeslotStart}}' endHour='{{this.user.timeslotEnd}}' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)' (actionBegin)="onActionBegin($event)"  eventRendered="OnEventRendered" (renderCell)="onRenderCell($event)" >
 <!--  <ng-template #quickInfoTemplatesHeader let-data>-->
 <!--    <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">-->
 <!--      <div class="e-popup-header">-->
@@ -25,6 +25,30 @@
 <!--      <div class="start-time" style="text-align: center;">Start: {{data.StartTime.toLocaleString()}}</div>-->
 <!--      <div class="end-time" style="text-align: center;">End: {{data.EndTime.toLocaleString()}}</div>-->
 <!--  </ng-template>-->
+  <ng-template #editorTemplate>
+    <table class="custom-event-editor" width="100%" cellspacing="20">
+      <tbody>
+      <tr>
+        <td class="e-textlabel">Kommentar</td>
+        <td colspan="4">
+          <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">Von</td>
+        <td colspan="4">
+          <input id="StartTime" class="e-field" type="text" name="StartTime" />
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">Zu</td>
+        <td colspan="4">
+          <input id="EndTime" class="e-field" type="text" name="EndTime" />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-template>
   <ng-template #quickInfoTemplatesFooter let-data>
   <div *ngIf="data.elementType == 'cell'" class="e-cell-footer">
     <div class="right-button">
@@ -33,5 +57,4 @@
   </div></ng-template>
 </ejs-schedule>
 </div>
-
 

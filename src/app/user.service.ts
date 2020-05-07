@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Booking} from './Booking';
 import {catchError, tap} from 'rxjs/operators';
@@ -30,6 +30,7 @@ export class UserService {
   readonly delUserUrl =  this.host + '/user';
   user: User;
   id: string;
+  public change: EventEmitter<any> = new EventEmitter();
 
   constructor(private readonly http: HttpClient) { }
 
@@ -43,7 +44,7 @@ export class UserService {
 
 
   getUsers() {
-    return this.http.get<any>(this.userUrl)
+    return this.http.get<any>(this.userUrl + this.token)
       .pipe(
         tap(_ => this.log('fetched all users')),
         catchError(this.handleError('getUsers', []))
@@ -152,6 +153,11 @@ export class UserService {
 
   getID() {
     return this.id;
+  }
+
+
+  public setData(value) {
+    this.change.emit(value);
   }
 
 }
