@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import {User} from '../User';
 import {UserService} from '../user.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-adminadd',
@@ -232,19 +232,4 @@ export class AdminaddComponent implements OnInit {
 
     }
   }
-
-  // async splitArray(users: User[]) {
-  //   const a = users;
-  //   while (a.length) {
-  //     await this.addUsers(a.splice(0, 100));
-  //   }
-  // }
-  //
-  // async  addUsers(users: User[]) {
-  //   this.userService
-  //     .addUsers(users)
-  //     .subscribe(resp => {
-  //       console.log('added!');
-  //     });
-  // }
 }

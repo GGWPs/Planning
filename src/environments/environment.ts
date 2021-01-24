@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://ggwp.eu:8080',
+  API_URL: 'https://localhost:8443',
   token: 'tlolij4pfnRETWQ7kTA8'
 };
 

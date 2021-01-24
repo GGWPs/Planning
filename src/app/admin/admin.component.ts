@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Map, MapboxGeoJSONFeature, MapLayerMouseEvent, SymbolLayout} from 'mapbox-gl';
-import {UserService} from "../user.service";
-import {Admin} from "./Admin";
-import {User} from "../User";
+import {UserService} from '../user.service';
+import {Admin} from './Admin';
+import {User} from '../User';
 import * as CryptoJS from 'crypto-js';
 
 @Component({
@@ -73,10 +73,10 @@ export class AdminComponent implements OnInit {
         .subscribe(adm => {
           console.log(adm);
           if (adm.hasOwnProperty('token')) {
-            console.log('strue')
+            console.log('strue');
             this.isAuthenticated = true;
           }
-          this.loginError = 'Password wrong!'
+          this.loginError = 'Password wrong!';
           resolve();
         });
     });

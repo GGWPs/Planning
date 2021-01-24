@@ -1,15 +1,11 @@
-import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../user.service';
-import { ItemModel } from '@syncfusion/ej2-angular-navigations';
 import {User} from '../User';
 import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
 import { createElement } from '@syncfusion/ej2-base';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
 import {
   EventSettingsModel,
-  DayService,
-  WeekService,
-  View,
   TimeScaleModel,
   ScheduleComponent,
   WorkHoursModel,

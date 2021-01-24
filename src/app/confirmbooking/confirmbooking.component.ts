@@ -2,9 +2,8 @@ import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
 import {BookingService} from '../booking.service';
 import {Router} from '@angular/router';
 import {Booking} from '../Booking';
-import {formatDate} from '@angular/common';
-import {UserService} from "../user.service";
-import {User} from "../User";
+import {UserService} from '../user.service';
+import {User} from '../User';
 
 @Component({
   selector: 'app-confirmbooking',

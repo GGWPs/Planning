@@ -3,7 +3,7 @@
   <p>Wählen Sie eine Zeit, die zu Ihnen passt</p>
   <p class="error"*ngIf="error">Datum in der Vergangenheit</p>
 <ejs-schedule *ngIf="this.bookings && this.user" #scheduleObj width='70%' height='520px' currentView='WorkWeek' [workHours]="scheduleHours" [views]="scheduleViews" [workDays]='workWeekDays'
-              startHour='{{this.user.timeslotStart}}' endHour='{{this.user.timeslotEnd}}' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)' (actionBegin)="onActionBegin($event)"  eventRendered="OnEventRendered" (renderCell)="onRenderCell($event)" >
+              startHour='{{this.user.timeslotStart}}' endHour='{{this.user.timeslotEnd}}' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [timeScale]="timeScale" (popupOpen)='onPopupOpen($event)' (actionBegin)="onActionBegin($event)"  eventRendered="OnEventRendered" >
 <!--  <ng-template #quickInfoTemplatesHeader let-data>-->
 <!--    <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">-->
 <!--      <div class="e-popup-header">-->

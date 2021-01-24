@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Map, MapboxGeoJSONFeature, MapLayerMouseEvent} from "mapbox-gl";
-import {UserService} from "../user.service";
-import {Admin} from "../admin/Admin";
+import {FormBuilder} from '@angular/forms';
+import {Map, MapboxGeoJSONFeature, MapLayerMouseEvent} from 'mapbox-gl';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-adminmap',

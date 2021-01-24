@@ -18,7 +18,6 @@ import {
 import {BookingService} from '../booking.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../user.service';
-import {formatDate} from '@angular/common';
 import { createElement } from '@syncfusion/ej2-base';
 
 L10n.load({
@@ -129,17 +128,6 @@ export class BookingComponent implements OnInit {
     }
     args.element.style.backgroundColor = categoryColor;
   }
-
-  // test(val: any) {
-  //   console.log('called!' + val);
-  // }
-  // getMajorTime(date: Date): string {
-  //   // return this.instance.formatDate(date, { skeleton: 'hm' });
-  //   // return formatDate(date,{ skeleton: 'hm' }, locale);
-  //   // return date.getHours().toString();
-  //
-  //   return '<a>'
-  // }
 
   onRenderCell(args: RenderCellEventArgs): void {
     if (args.elementType === 'workCells' || args.elementType === 'monthCells') {

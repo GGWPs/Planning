@@ -9,7 +9,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {MatNativeDateModule} from '@angular/material/core';
 import {
   MatButtonModule, MatCardModule,
   MatFormFieldModule,
@@ -37,14 +37,12 @@ import {
   DialogDeleteComponent, DialogDeleteUserComponent, DialogEmailUserComponent,
   DialogOverviewExampleDialog
 } from './adminusers/adminusers.component';
-import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
-import { CookieService } from 'ngx-cookie-service';
-import { AdminmapComponent } from './adminmap/adminmap.component';
 import { BookedComponent } from './booked/booked.component';
 import { CoronaComponent } from './corona/corona.component';
 import { AdminemailComponent } from './adminemail/adminemail.component';
 import {FilteradresPipe} from './filteradres.pipe';
+import {AdminMapModule} from './adminmap/admin-map.module';
 
 @NgModule({
   declarations: [
@@ -58,7 +56,6 @@ import {FilteradresPipe} from './filteradres.pipe';
     AdminusersComponent,
     DialogOverviewExampleDialog,
     NotFoundPageComponent,
-    AdminmapComponent,
     BookedComponent,
     CoronaComponent,
     DialogDeleteComponent,
@@ -73,9 +70,6 @@ import {FilteradresPipe} from './filteradres.pipe';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgxMapboxGLModule.withConfig({
-      accessToken: 'pk.eyJ1IjoiZ2d3cHMiLCJhIjoiY2s5YW04dThsMDl0NDNtcDdyZWk3b253NSJ9.mIbaAxPPsbYWNJJcKyXAMA',
-    }),
     MatFormFieldModule,
     MatSliderModule,
     BrowserAnimationsModule,
@@ -96,14 +90,14 @@ import {FilteradresPipe} from './filteradres.pipe';
     MatToolbarModule,
     MatTabsModule,
     MatSelectModule,
+    AdminMapModule
   ],
   providers: [DayService,
     WeekService,
     WorkWeekService,
     MonthService,
     AgendaService,
-    MonthAgendaService,
-      CookieService],
+    MonthAgendaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
